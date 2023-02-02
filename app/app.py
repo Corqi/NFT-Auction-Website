@@ -2,7 +2,6 @@ from flask import Flask, flash, redirect, url_for, session
 from werkzeug.debug import DebuggedApplication
 from flask_login import LoginManager
 import psycopg2
-
 import app.config
 
 db = psycopg2.connect(
@@ -65,9 +64,6 @@ def create_app():
     # from .views.errors import page_not_found
     # app.register_error_handler(404, page_not_found)
     # todo koniec bloku
-
-    cur.execute('CREATE TABLE books2 (title varchar (150) NOT NULL)')
-    db.commit()
 
     # for localhost only
     app.run()
