@@ -1,14 +1,14 @@
-import models
+from app.models import User, Auction, History
 
 
 # these functions translate sql select into list of objects
 # IMPORTANT use only when selecting ALL columns
 
-def sql2user(rows) -> list[object]:
+def sql2user(rows) -> list[User]:
     result = []
 
     for row in rows:
-        user = models.User(
+        user = User(
             uid=row[0],
             username=row[1],
             password=row[2],
@@ -22,11 +22,11 @@ def sql2user(rows) -> list[object]:
     return result
 
 
-def sql2auction(rows) -> list[object]:
+def sql2auction(rows) -> list[Auction]:
     result = []
 
     for row in rows:
-        auction = models.Auction(
+        auction = Auction(
             aid=row[0],
             uid=row[1],
             bid=row[2],
@@ -42,11 +42,11 @@ def sql2auction(rows) -> list[object]:
     return result
 
 
-def sql2history(rows) -> list[object]:
+def sql2history(rows) -> list[History]:
     result = []
 
     for row in rows:
-        history = models.History(
+        history = History(
             bhid=row[0],
             aid=row[1],
             bid=row[2],

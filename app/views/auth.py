@@ -23,7 +23,7 @@ def register():
             return redirect(url_for('bp_auth.register'))
 
         # TODO create new user
-        # new_user = User(email=email,
+        # new_user = Usear(email=email,
         #                 pw_hash=generate_password_hash(password, method='sha256', salt_length=8)
         #                 )
         new_user = None
