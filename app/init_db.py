@@ -35,7 +35,7 @@ def init_db():
 				bhid SERIAL PRIMARY KEY,
 				aid INTEGER not NULL,
 				bid INTEGER NOT NULL,
-				date TIMESTAMP not NULL,
+				date TIMESTAMP DEFAULT now() not NULL,
 				price FLOAT not NULL,
 				FOREIGN KEY(aid) REFERENCES auction_items(aid),
 				FOREIGN KEY(bid) REFERENCES users(uid),

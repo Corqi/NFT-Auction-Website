@@ -70,3 +70,25 @@ input {
     gap: 1vw;
 }
 
+.bidding-desc{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+ img{
+     max-width: 80%;
+     max-height: 80%;
+ }
+
+.bidding-button{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1vw;
+    background-color: rgba(88, 172, 255, 0.99) !important;
+    color: white;
+    border: rgba(88, 172, 255, 0.99) !important;
+}

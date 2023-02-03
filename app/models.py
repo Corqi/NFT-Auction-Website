@@ -105,11 +105,6 @@ class Auction:
 
     # add auction to db
     def add(self):
-        # check if auction exists
-        cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (self.aid,))
-        if len(cur.fetchall()) == 0:
-            logging.error('Auction not found!')
-            return
         # check if seller and bidder exists
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (self.uid,))
         if len(cur.fetchall()) == 0:
@@ -194,17 +189,13 @@ class History:
         if len(cur.fetchall()) == 0:
             logging.error('Bidder not found!')
             return
-        # check for not nullable variables
-        if self.date is None or self.price is None:
-            logging.error('Not nullable variables found!')
-            return
         # check if price >= 0
         if self.price < 0:
             logging.error('Price must be a positive number!')
             return
 
         # add to db
-        cur.execute('''INSERT INTO bidding_history (aid, bid, date, price) VALUES (%s, %s, %s, %s);''',
-                    (self.aid, self.bid, self.date, self.price))
+        cur.execute('''INSERT INTO bidding_history (aid, bid, price) VALUES (%s, %s, %s);''',
+                    (self.aid, self.bid, self.price))
         db.commit()
         return

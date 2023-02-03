@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{%block title%}
+Home
+{%endblock%}
+
+{%block content%}
+    {% if auction %}
+        <div class = "text-content">
+            <div class="container shadow bg-dark rounded product-container" style="margin-top: 2%;">
+                  <div class="row" style="margin-right: 2%">
+                      <div class="col-md-3" style="margin-left: 2%; margin-top: 2%">
+                          <a href={{ auction.link }}><img src={{ auction.link }}></a>
+                      </div>
+                      <div class="col-lg prod-content-container container" style="margin-bottom: 2%">
+                          <div class="row product-title">
+                              <h3><b>{{ auction.name }}</b> </h3>
+                              <hr class="rounded-title">
+                              <h4><b>Price: {{ auction.price }}zł</b></h4>
+                          </div>
+                          <div class="row">
+                              <div class="col"></div>
+                              <div class="col"></div>
+                              <div class="col">
+                                  <button class="btn btn-lg bidding-button">Bidding time!</button>
+                              </div>
+                          </div>
+                      </div>
+                      <form class="form-popup" method="POST" action="#" id="myForm">
+                        <dl>
+                            {{ form.csrf_token }}
+                            {{form.email.label}} <br>
+                            {{form.email}} <br>
+                            {{form.password.label}} <br>
+                            {{form.password}} <br>
+
+                        <div class="buttons">
+                            <button class="btn btn-large btn-login" type="submit">Login</button>
+                            <p id="linkRegister">Don't Have an Account? <a class = "login-link" href="{{ url_for('bp_auth.register') }}">Sign up here</a>
+                            </p>
+                        </div>
+                        </dl>
+                        </form>
+                  </div>
+             </div>
+        <div class="container shadow bg-dark rounded product-container" style="margin-top: 2%; margin-bottom: 2%">
+              <div class="row" style="margin-right: 2%">
+                  <div class="col-lg prod-content-container container">
+                      <div class="bidding-desc" style="margin-top: 2%">
+                      <h3><b>Bidding history</b> </h3>
+                          {% if bids %}
+                              <table class="table table-striped">
+                                <thead><tr><th>Date and time</th><th>Username</th><th>Price</th></tr></thead>
+                                <tbody>
+                                    {% for bid in bids %}
+                                        <tr><td>{{ bid.date.strftime('%d-%m-%Y, %H:%M') }}</td><td>{{ bid.username }}</td><td>{{ bid.price }}</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+             </div>
+        </div>
+    {% endif %}
+{%endblock%}
