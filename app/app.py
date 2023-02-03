@@ -34,7 +34,13 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User()
+        cur.execute('SELECT * FROM users WHERE uid=(%s);', (user_id,))
+        result = cur.fetchall()
+        try:
+            user = User(*result[0])
+        except IndexError:
+            user = None
+        return user
 
     @login_manager.unauthorized_handler
     def unauthorized():

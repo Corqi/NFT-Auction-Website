@@ -4,6 +4,10 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from app.forms import LoginForm, RegistrationForm
 
+from app.app import db, cur
+from app.db_handler import sql2user
+from app.models import User
+
 bp = Blueprint('bp_auth', __name__)
 
 
@@ -12,21 +16,24 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        # TODO protect from sql injection
         email = form.email.data
         password = form.password.data
 
-        # TODO check if there is a user with such an email in the database
-        user = None     # get user from db
+        cur.execute('SELECT * FROM users WHERE email=(%s);', (email,))
+        result = cur.fetchall()
+        try:
+            user = User(*result[0])
+        except IndexError:
+            user = None
+
         if user:
             flash(Markup(f'Email address already exists. Go to <a class="danger-link" href="{url_for("bp_auth.login")}">login page</a>.'),
                   'error')
             return redirect(url_for('bp_auth.register'))
 
-        # TODO create new user
-        # new_user = Usear(email=email,
-        #                 pw_hash=generate_password_hash(password, method='sha256', salt_length=8)
-        #                 )
-        new_user = None
+        new_user = User(username=email, email=email, password=generate_password_hash(password, method='sha256', salt_length=8))
+        new_user.add()
 
         # TODO add new_user to db
         flash('Your account has been created you can now log in')
@@ -45,9 +52,14 @@ def login():
         email = form.email.data
         password = form.password.data
 
-        user = None     # TODO get user from db
+        cur.execute('SELECT * FROM users WHERE email=(%s);', (email,))
+        result = cur.fetchall()
+        try:
+            user = User(*result[0])
+        except IndexError:
+            user = None
 
-        if not user:    # or not check_password_hash(user.pw_hash, password):
+        if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('bp_auth.login'))
 

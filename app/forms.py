@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, DateTimeField
 from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, EqualTo
 from wtforms.widgets import NumberInput
+
+from wtforms.widgets import TextArea
 
 
 class RegistrationForm(FlaskForm):
@@ -25,3 +28,9 @@ class BiddingForm(FlaskForm):
     price = IntegerField('Price from', widget=NumberInput(min=0, step=1), render_kw={"placeholder": "PLN"})
     submit = SubmitField('Bidding', id='biddingButton')
 
+
+class NewAuctionForm(FlaskForm):
+    auction_end = DateTimeField('Auction end', id='inputAuctionEnd')
+    name = StringField('Name', id='inputName')
+    description = StringField('Description', id='inputDescription', widget=TextArea())
+    img_link = StringField('Image link', id='inputImgLink')

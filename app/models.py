@@ -12,6 +12,10 @@ class User(UserMixin):
         self.name = name
         self.surname = surname
 
+    def get_id(self):
+        """ For login manager"""
+        return self.uid
+
     # update user in db
     def update(self):
         # check if user exists
