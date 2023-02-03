@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{%block title%}
+Home
+{%endblock%}
+
+{%block content%}
+    {% if auctions %}
+        {% for auction in auctions %}
+            <div class = "text-content">
+                <div class="container shadow bg-dark rounded product-container" style="margin-top: 2%;">
+                      <div class="row" style="margin-right: 2%">
+                          <div class="col-md-3" style="margin-left: 2%; margin-top: 2%">
+                              <a href="http://{{ auction.link }}"></a>
+                          </div>
+                          <div class="col-lg prod-content-container container">
+                              <div class="row product-title">
+                                  <h3><b>{{ auction.name }}</b> </h3>
+                                  <hr class="rounded-title">
+                                  <h4><b>Price: {{ auction.price }}zł</b></h4>
+                              </div>
+                              <div class="row product-buttons">
+                                  <a href="#"><button class="btn btn-lg btn-product-pink">See auction</button></a>
+                              </div>
+                          </div>
+                      </div>
+                 </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{%endblock%}

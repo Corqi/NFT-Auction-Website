@@ -1,0 +1,72 @@
+.navbar-custom {
+    background-color: rgb(75, 169, 255);
+}
+
+#main-footer{
+    background-color: rgb(68, 136, 203);
+    bottom:0;
+    margin-top:auto;
+    width: 100%;
+}
+
+#content {
+    min-height: calc(100vh - 144px);
+}
+
+.forms{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items:center;
+    margin-bottom: 20px;
+    color: rgb(88, 172, 255);
+}
+
+.btn-login {
+    margin-left: auto;
+    background-color: rgba(88, 172, 255, 0.99) !important;
+    color: white;
+    margin-bottom: 20px;
+    border: rgba(88, 172, 255, 0.99) !important;
+}
+
+.btn-login:hover {
+    margin-left: auto;
+    background-color: rgba(88, 172, 255, 0.6) !important;
+    color: white;
+    border: rgba(88, 172, 255, 0.8) !important;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+
+.text-content{
+    color: rgb(88, 172, 255);
+    text-align: center;
+    display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.prod-content-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 35vh;
+}
+
+.product-title{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-buttons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1vw;
+}
+

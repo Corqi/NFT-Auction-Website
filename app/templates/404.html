@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container" style="margin-top: 2%">
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    -->
+        <div class="d-flex align-items-center justify-content-center vh-100" style="color: white">
+            <div class="text-center" style="color: rgb(88, 172, 255)">
+                <h1 class="display-1 fw-bold">404</h1>
+                <p class="fs-3"> Page not found.</p>
+                <p class="lead">
+                    The page you’re looking for doesn’t exist.
+                  </p>
+                <a href="{{ url_for('bp_home.home_get') }}" style="background-color: rgb(88, 172, 255)" class="btn btn-primary">Go Home</a>
+            </div>
+        </div>
+    </body>
+{% endblock content %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{%block title%}
+Login
+{%endblock%}
+
+{%block content%}
+    <div id="content" class="d-flex align-items-center justify-content-center">
+        <div class="card text-center">
+            <div class="card-body">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                <div class="container" style="margin-top: 2%">
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
+                </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% if form.errors %}
+                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                        {% for error in field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                <form class="forms" method="POST" action="#">
+                    <dl>
+                        {{ form.csrf_token }}
+                        {{form.email.label}} <br>
+                        {{form.email}} <br>
+                        {{form.password.label}} <br>
+                        {{form.password}} <br>
+
+                    <div class="buttons">
+                        <button class="btn btn-large btn-login" type="submit">Login</button>
+                        <p id="linkRegister">Don't Have an Account? <a class = "login-link" href="{{ url_for('bp_auth.register') }}">Sign up here</a>
+                        </p>
+                    </div>
+                    </dl>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}
