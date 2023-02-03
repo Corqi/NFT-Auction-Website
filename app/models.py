@@ -12,7 +12,7 @@ class User(UserMixin):
 
 
 class Auction:
-    def __init__(self, aid, uid, bid, auction_start, auction_end, price, name, desc, lin):
+    def __init__(self, aid, uid, bid, auction_start, auction_end, price, name, desc, link):
         self.aid = aid
         self.uid = uid
         self.bid = bid
@@ -21,4 +21,13 @@ class Auction:
         self.price = price
         self.name = name
         self.desc = desc
-        self.lin = lin
+        self.link = link
+
+
+class History:
+    def __init__(self, bhid, aid, bid, date, price):
+        self.bhid = bhid
+        self.aid = aid
+        self.bid = bid
+        self.date = date
+        self.price = price
