@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
+from flask_login import current_user
 
 from ..init_db import init_db
 from ..app import db, cur
@@ -18,4 +19,9 @@ def home_get():
     import datetime
     list_of_auctions = [Auction(i, 1, i, datetime.datetime.now(), datetime.datetime.now() + datetime.timedelta(days=1), 100*i, f"Example {i}", "desc", "link") for i in range(50)]
 
-    return render_template('gallery.html', auctions=list_of_auctions)
+    return render_template('gallery.html', auctions=list_of_auctions, user=current_user)
+
+
+@bp.route('/new')
+def new_item_get():
+    return render_template('gallery.html', user=current_user)
