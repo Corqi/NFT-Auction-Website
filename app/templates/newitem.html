@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{%block title%}
+Login
+{%endblock%}
+
+{%block content%}
+    <div id="content" class="d-flex align-items-center justify-content-center">
+        <div class="card text-center">
+            <div class="card-body">
+                <form>
+                {{ form.csrf_token }}
+                {{ form.name.label }} <br>
+                {{ form.name }} <br>
+                {{ form.auction_end.label }} <br>
+                {{ form.auction_end }} <br>
+                {{ form.description.label }} <br>
+                {{ form.description(rows="4") }} <br>
+                {{ form.img_link.label }} <br>
+                {{ form.img_link }} <br>
+
+                <div class="buttons">
+                    <button class="btn btn-large btn-login" type="submit">Add item</button>
+                    </p>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}

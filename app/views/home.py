@@ -5,7 +5,8 @@ from ..init_db import init_db
 from ..app import db, cur
 from ..db_handler import sql2user
 
-from ..models import Auction
+from app.models import Auction
+from app.forms import NewAuctionForm
 
 bp = Blueprint('bp_home', __name__)
 
@@ -24,4 +25,5 @@ def home_get():
 
 @bp.route('/new')
 def new_item_get():
-    return render_template('gallery.html', user=current_user)
+    form = NewAuctionForm()
+    return render_template('newitem.html', form=form, user=current_user)
