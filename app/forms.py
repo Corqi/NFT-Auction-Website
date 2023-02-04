@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DateTimeField
+from wtforms import StringField, PasswordField, SubmitField, DateTimeField, FloatField
 from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, EqualTo
 from wtforms.widgets import NumberInput
@@ -25,7 +25,8 @@ class LoginForm(FlaskForm):
 
 
 class BiddingForm(FlaskForm):
-    price = IntegerField('Price from', widget=NumberInput(min=0, step=1), render_kw={"placeholder": "PLN"})
+    price = FloatField('Enter bidding price', render_kw={"placeholder": "PLN"},
+                       validators=[InputRequired(message='Price field is required')])
     submit = SubmitField('Bidding', id='biddingButton')
 
 

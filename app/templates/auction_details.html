@@ -16,36 +16,45 @@ Home
                               <h3><b>{{ auction.name }}</b> </h3>
                               <hr class="rounded-title">
                               <h4><b>Price: {{ auction.price }}zł</b></h4>
+                              <h4><b>Highest bid: {{ auction.highest_bid }}zł </b></h4>
                           </div>
+                          <div class="row">
+                                  <div class="bidding-desc">
+                                      <h5><b>Auctioneer: {{ auction.auctioneer }}</b></h5>
+                                      <h5><b>Description: {{ auction.desc }}</b></h5>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="bidding-desc">
+                                      <div id="timeleft" data-auction_end="{{ auction.auction_end }}">
+                                          <h5><b>Time left: </b></h5>
+                                      </div>
+                                  </div>
+                              </div>
                           <div class="row">
                               <div class="col"></div>
                               <div class="col"></div>
                               <div class="col">
-                                  <button class="btn btn-lg bidding-button">Bidding time!</button>
+                                  <form class="form-popup" method="POST" action="#" id="myForm">
+                                    <dl>
+                                        {{ form.csrf_token }}
+                                        {{form.price.label}} <br>
+                                        {{form.price}} <br>
+
+                                    <div class="buttons">
+                                        <button class="btn btn-large btn-login" type="submit">Bidding Time</button>
+                                    </div>
+                                    </dl>
+                                    </form>
                               </div>
                           </div>
                       </div>
-                      <form class="form-popup" method="POST" action="#" id="myForm">
-                        <dl>
-                            {{ form.csrf_token }}
-                            {{form.email.label}} <br>
-                            {{form.email}} <br>
-                            {{form.password.label}} <br>
-                            {{form.password}} <br>
-
-                        <div class="buttons">
-                            <button class="btn btn-large btn-login" type="submit">Login</button>
-                            <p id="linkRegister">Don't Have an Account? <a class = "login-link" href="{{ url_for('bp_auth.register') }}">Sign up here</a>
-                            </p>
-                        </div>
-                        </dl>
-                        </form>
                   </div>
              </div>
         <div class="container shadow bg-dark rounded product-container" style="margin-top: 2%; margin-bottom: 2%">
               <div class="row" style="margin-right: 2%">
                   <div class="col-lg prod-content-container container">
-                      <div class="bidding-desc" style="margin-top: 2%">
+                      <div class="bidding-history" style="margin-top: 2%">
                       <h3><b>Bidding history</b> </h3>
                           {% if bids %}
                               <table class="table table-striped">
@@ -63,4 +72,38 @@ Home
              </div>
         </div>
     {% endif %}
+    <script>
+        let countDownDateElement = document.getElementById('timeleft')
+          let countDownDateString = countDownDateElement.getAttribute('data-auction_end');
+          let countDownDate = Date.parse(countDownDateString);
+          let x = setInterval(function() {
+            // Get today's date and time
+            let now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            let distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (days<1){
+                countDownDateElement.innerHTML = '<h5><b>Time left: '+ hours + ' hours ' + minutes + ' min </b></h5>';
+            } else if(days < 2){
+                countDownDateElement.innerHTML = '<h5><b>Time left: '+ days + ' days ' + hours + ' hours </b></h5>';
+            clearInterval(x);
+            }else{
+                countDownDateElement.innerHTML = '<h5><b>Time left: '+ days + ' days </b></h5>';
+            clearInterval(x);
+            }
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+            clearInterval(x);
+                countDownDateElements[i].innerHTML = "EXPIRED";
+            }
+            }, 1000);
+    </script>
 {%endblock%}

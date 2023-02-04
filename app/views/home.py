@@ -10,6 +10,7 @@ from app.forms import NewAuctionForm
 
 bp = Blueprint('bp_home', __name__)
 
+
 @bp.route('/')
 def home_get():
     # init_db()
