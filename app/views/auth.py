@@ -35,7 +35,6 @@ def register():
         new_user = User(username=email, email=email, password=generate_password_hash(password, method='sha256', salt_length=8))
         new_user.add()
 
-        # TODO add new_user to db
         flash('Your account has been created you can now log in')
         return redirect(url_for('bp_auth.login'))
 
