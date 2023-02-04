@@ -30,12 +30,14 @@
                 <span class="nav-title"><strong>Home</strong></span>
             </a>
             <ul class="nav navbar-nav">
-                {% if user.is_authenticated %}
-                    <li><a href="new">Add item</a></li>
-                    <li><a href="logout">Logout</a></li>
-                {% else %}
-                    <li><a href="/login">Log in</a></li>
-                    <li><a href="/register">Sign-up</a></li>
+                {% if user is defined %}
+                    {% if user.is_authenticated %}
+                        <li><a href="/new">Add item</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="/login">Log in</a></li>
+                        <li><a href="/register">Sign-up</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </nav>
