@@ -3,7 +3,7 @@ from app.app import db, cur
 
 def init_db():
 	# table users
-	cur.execute('DROP TABLE IF EXISTS users;')
+	cur.execute('DROP TABLE IF EXISTS users CASCADE;')
 	cur.execute('''create table users (
 				uid SERIAL PRIMARY KEY,
 				username VARCHAR(32) UNIQUE not NULL,
@@ -13,7 +13,7 @@ def init_db():
 				surname VARCHAR(32));''')
 
 	# table auction_items
-	cur.execute('DROP TABLE IF EXISTS auction_items;')
+	cur.execute('DROP TABLE IF EXISTS auction_items CASCADE;')
 	cur.execute('''create table auction_items (
 				aid SERIAL PRIMARY KEY,
 				uid INTEGER NOT NULL,
@@ -30,7 +30,7 @@ def init_db():
 				CHECK(price >= 0));''')
 
 	# table bidding_history
-	cur.execute('DROP TABLE IF EXISTS bidding_history;')
+	cur.execute('DROP TABLE IF EXISTS bidding_history CASCADE;')
 	cur.execute('''create table bidding_history (
 				bhid SERIAL PRIMARY KEY,
 				aid INTEGER not NULL,
