@@ -111,7 +111,7 @@ class Auction:
     def add(self):
         # check if auction exists
         cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (self.aid,))
-        if len(cur.fetchall()) == 0:
+        if len(cur.fetchall()) != 0:
             logging.error('Auction not found!')
             return
         # check if seller and bidder exists
