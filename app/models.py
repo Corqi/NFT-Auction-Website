@@ -97,6 +97,10 @@ class Auction:
         if self.price < 0:
             logging.error('Price must be a positive number!')
             return
+        # check if auction_end > auction_start
+        if self.auction_end < self.auction_start:
+            logging.error('Auction_end must be later than Auction_start!')
+            return
 
         # update db
         cur.execute('''UPDATE auction_items SET bid=(%s), auction_start=(%s), auction_end=(%s), price=(%s), name=(%s), 
@@ -109,6 +113,7 @@ class Auction:
 
     # add auction to db
     def add(self):
+        cur.execute('BEGIN TRANSACTION;')
         # check if seller and bidder exists
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (self.uid,))
         if len(cur.fetchall()) == 0:
@@ -126,6 +131,10 @@ class Auction:
         # check if price >= 0
         if self.price < 0:
             logging.error('Price must be a positive number!')
+            return
+        # check if auction_end > auction_start
+        if self.auction_end < self.auction_start:
+            logging.error('Auction_end must be later than Auction_start!')
             return
 
         # add to db
