@@ -12,7 +12,9 @@ bp = Blueprint('bp_example', __name__)
 @bp.route('/example')
 def example_get():
     # init_db()
-    # cur.execute('SELECT * FROM users WHERE uid=(%s);', (1,))
+    stri = "' OR '1'='1' /*"
+    cur.execute('SELECT * FROM users WHERE uid=(%s);', stri)
+    print(cur.fetchall())
     # users = sql2user(cur.fetchall())
     # users[0].update()
     # new_user = User(username='basia123', password='pass', email='basia@gmail.com', name='basia')

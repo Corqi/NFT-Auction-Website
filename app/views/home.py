@@ -25,7 +25,7 @@ def home_get():
     # list_of_auctions = [Auction(i, 1, i, datetime.datetime.now(), datetime.datetime.now() + datetime.timedelta(days=1), 100*i, f"Example {i}", "desc", "link") for i in range(50)]
 
     list_of_auctions = []
-    cur.execute('SELECT * FROM auction_items;')
+    cur.execute('SELECT * FROM auction_items WHERE auction_end > (%s);', (datetime.datetime.now(),))
     for auction in cur.fetchall():
         list_of_auctions.append(Auction(*auction))
 
