@@ -29,14 +29,16 @@
             <a class="navbar-brand" href="{{ url_for('bp_home.home_get') }}">
                 <span class="nav-title"><strong>Home</strong></span>
             </a>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav list-group list-group-horizontal">
                 {% if user is defined %}
                     {% if user.is_authenticated %}
-                        <li><a href="/new">Add item</a></li>
-                        <li><a href="/logout">Logout</a></li>
+                        <li class="list-group-item"><a href="/new">Add item</a></li>
+                        <li class="list-group-item"><a href="/bids">Your bids</a></li>
+                        <li class="list-group-item"><a href="/auctions">Your auctions</a></li>
+                        <li class="list-group-item"><a href="/logout">Logout</a></li>
                     {% else %}
-                        <li><a href="/login">Log in</a></li>
-                        <li><a href="/register">Sign-up</a></li>
+                        <li class="list-group-item"><a href="/login">Log in</a></li>
+                        <li class="list-group-item"><a href="/register">Sign-up</a></li>
                     {% endif %}
                 {% endif %}
             </ul>

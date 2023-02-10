@@ -150,7 +150,7 @@ class Auction:
 
 
 class History:
-    def __init__(self, bhid=None, aid=None, bid=None, date=None, price=None, bidder_username=None):
+    def __init__(self, bhid=None, aid=None, bid=None, date=None, price=None, bidder_username=None, auction_name=None):
         self.bhid = bhid
         self.aid = aid
         self.bid = bid
@@ -158,6 +158,7 @@ class History:
         self.price = price
 
         self.bidder_username = bidder_username
+        self.auction_name = auction_name
 
     # update history in db
     def update(self):

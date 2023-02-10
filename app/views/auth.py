@@ -3,7 +3,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 
 from app.forms import LoginForm, RegistrationForm
-
 from app.app import db, cur
 from app.models import User
 
@@ -15,7 +14,6 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        # TODO protect from sql injection
         email = form.email.data
         password = form.password.data
 
