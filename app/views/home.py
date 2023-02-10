@@ -1,9 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user
 
-from ..init_db import init_db
-from ..app import db, cur
-from ..db_handler import sql2user
+from app.app import cur
 
 from app.models import Auction
 from app.forms import NewAuctionForm
@@ -16,7 +14,14 @@ bp = Blueprint('bp_home', __name__)
 @bp.route('/')
 def home_get():
     list_of_auctions = []
-    cur.execute('SELECT * FROM auction_items WHERE auction_end > (%s);', (datetime.datetime.now(),))
+    cur.execute(
+        'SELECT a.aid, a.uid, a.bid, a.auction_start, a.auction_end, a.price, a.name, a.desc, a.link, u.username, COALESCE(MAX(b.price), 0) as max_price '
+        'FROM auction_items a '
+        'JOIN users u ON u.uid = a.uid '
+        'LEFT JOIN bidding_history b ON a.aid = b.aid '
+        'WHERE auction_end > (%s)'
+        'GROUP BY a.aid, u.username;', (datetime.datetime.now(),)
+    )
     for auction in cur.fetchall():
         list_of_auctions.append(Auction(*auction))
 

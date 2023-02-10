@@ -2,7 +2,6 @@ import datetime
 
 from flask import Blueprint, render_template, redirect, url_for
 from ..app import db, cur
-from ..db_handler import sql2user
 from app.models import User, Auction, History
 from ..init_db import init_db
 

@@ -61,7 +61,7 @@ class User(UserMixin):
 
 class Auction:
     def __init__(self, aid=None, uid=None, bid=None, auction_start=None, auction_end=None, price=None, name=None,
-                 desc=None, link=None):
+                 desc=None, link=None, owner_username=None, highest_bid=None):
         self.aid = aid
         self.uid = uid
         self.bid = bid
@@ -71,6 +71,9 @@ class Auction:
         self.name = name
         self.desc = desc
         self.link = link
+
+        self.owner_username = owner_username
+        self.highest_bid = highest_bid
 
     # update auction in db
     def update(self):
@@ -147,12 +150,14 @@ class Auction:
 
 
 class History:
-    def __init__(self, bhid=None, aid=None, bid=None, date=None, price=None):
+    def __init__(self, bhid=None, aid=None, bid=None, date=None, price=None, bidder_username=None):
         self.bhid = bhid
         self.aid = aid
         self.bid = bid
         self.date = date
         self.price = price
+
+        self.bidder_username = bidder_username
 
     # update history in db
     def update(self):

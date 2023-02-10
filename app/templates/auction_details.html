@@ -31,7 +31,7 @@ Home
                           </div>
                           <div class="row">
                                   <div class="bidding-desc">
-                                      <h5><b>Auctioneer: {{ auction.auctioneer }}</b></h5>
+                                      <h5><b>Auctioneer: {{ auction.owner_username }}</b></h5>
                                       <h5><b>Description: {{ auction.desc }}</b></h5>
                                   </div>
                               </div>
@@ -46,7 +46,7 @@ Home
                               <div class="col"></div>
                               <div class="col"></div>
                               <div class="col">
-                                  {% if user.is_authenticated and not is_expired %}
+                                  {% if user.is_authenticated and not is_expired and user.get_id() != auction.uid %}
                                   <form class="form-popup" method="POST" action="#" id="myForm">
                                     <dl>
                                         {{ form.csrf_token }}
@@ -74,7 +74,7 @@ Home
                                 <thead><tr><th>Date and time</th><th>Username</th><th>Price</th></tr></thead>
                                 <tbody>
                                     {% for bid in bids %}
-                                        <tr><td>{{ bid.date.strftime('%d-%m-%Y, %H:%M') }}</td><td>{{ bid.username }}</td><td>{{ bid.price }}</td></tr>
+                                        <tr><td>{{ bid.date.strftime('%d-%m-%Y, %H:%M') }}</td><td>{{ bid.bidder_username }}</td><td>{{ bid.price }}</td></tr>
                                     {% endfor %}
                                 </tbody>
                               </table>

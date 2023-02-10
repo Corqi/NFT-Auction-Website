@@ -5,7 +5,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import LoginForm, RegistrationForm
 
 from app.app import db, cur
-from app.db_handler import sql2user
 from app.models import User
 
 bp = Blueprint('bp_auth', __name__)
