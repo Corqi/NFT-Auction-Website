@@ -13,14 +13,14 @@ bp = Blueprint('bp_auctions', __name__)
 
 
 @bp.route('/auctions')
-def get_all_auctions():
+def user_auctions_get():
     cur.execute('SELECT a.aid, a.auction_start, a.auction_end, a.price, a.name, a.desc, a.link, u.username, COALESCE(MAX(b.price), 0) as max_price FROM auction_items a JOIN users u ON u.uid = a.uid LEFT JOIN bidding_history b ON a.aid = b.aid GROUP BY a.aid, u.username;')
     auctions = map_auction_dto(cur.fetchall())
     return render_template('gallery.html', auctions=auctions, user=current_user)
 
 
 @bp.route('/auction/<int:auction_id>', methods=['POST', 'GET'])
-def get_auction(auction_id):
+def auction_details(auction_id):
     form = BiddingForm()
     if form.validate_on_submit():
         cur.execute('SELECT price FROM auction_items WHERE aid=(%s);', (auction_id,))
@@ -47,6 +47,7 @@ def get_auction(auction_id):
     bids = map_history_dto(cur.fetchall())
     if auction.__len__() == 0:
         return render_template('404.html')
-    return render_template('auction_details.html', auction=auction[0], bids=bids, form=form, user=current_user)
+    # TODO do not display the form if the user is the owner of the auction
+    return render_template('auction_details.html', auction=auction[0], bids=bids, form=form, user=current_user, is_expired=auction[0].auction_end<datetime.datetime.now())
 
 
