@@ -46,7 +46,7 @@ Home
                               <div class="col"></div>
                               <div class="col"></div>
                               <div class="col">
-                                  {% if user.is_authenticated and not is_expired and user.get_id() != auction.uid %}
+                                  {% if user.is_authenticated and (not is_expired) and (user.get_id()|int != auction.uid) %}
                                   <form class="form-popup" method="POST" action="#" id="myForm">
                                     <dl>
                                         {{ form.csrf_token }}
