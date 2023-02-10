@@ -35,9 +35,9 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (user_id,))
-        result = cur.fetchall()
+        result = cur.fetchone()
         try:
-            user = User(*result[0])
+            user = User(*result)
         except IndexError:
             user = None
         return user

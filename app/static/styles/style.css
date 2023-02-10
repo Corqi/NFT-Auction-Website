@@ -9,8 +9,8 @@
     width: 100%;
 }
 
-#content {
-    min-height: calc(100vh - 144px);
+.content {
+    min-height: calc(100vh - 146px);
 }
 
 .forms{

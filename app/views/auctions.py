@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app.app import cur
 from app.forms import BiddingForm, NewAuctionForm
@@ -10,8 +10,8 @@ import datetime
 bp = Blueprint('bp_auctions', __name__)
 
 
-# TODO create page to display user bids
 @bp.route('/auctions')
+@login_required
 def user_auctions_get():
     cur.execute(
         'SELECT ai.*, u.username, COALESCE(MAX(b.price), 0) as max_price '
@@ -19,7 +19,7 @@ def user_auctions_get():
         'JOIN users u ON u.uid = ai.uid '
         'LEFT JOIN bidding_history b ON ai.aid = b.aid '
         'WHERE ai.uid = (%s)'
-        'GROUP BY ai.aid, u.username;', (str(current_user.get_id()))
+        'GROUP BY ai.aid, u.username;', (str(current_user.get_id()),)
     )
     auctions = []
     for auction in cur.fetchall():
@@ -28,24 +28,26 @@ def user_auctions_get():
 
 
 @bp.route('/bids')
+@login_required
 def user_bids_get():
     cur.execute(
         'SELECT bi.*, NULL, ai.name '
         'FROM bidding_history bi '
         'LEFT JOIN (SELECT aid, name FROM auction_items) ai on ai.aid = bi.aid '
-        'WHERE bi.bid = 3;', (current_user.get_id(),)
+        'WHERE bi.bid = (%s);', (str(current_user.get_id()),)
     )
     bids = []
     for bid in cur.fetchall():
         bids.append(History(*bid))
-        print(vars(History(*bid)))
 
     return render_template('bids.html', user=current_user, bids=bids)
 
 
 @bp.route('/auction/<int:auction_id>', methods=['POST', 'GET'])
 def auction_details(auction_id):
-    # TODO check if user can access to auction (user is auction owner and auction expired)
+    cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (auction_id,))
+    if not cur.fetchall():
+        return render_template('404.html'), 404
     form = BiddingForm()
     if form.validate_on_submit():
         cur.execute('SELECT price FROM auction_items WHERE aid=(%s);', (auction_id,))
@@ -94,6 +96,7 @@ def auction_details(auction_id):
 
 
 @bp.route('/new', methods=['POST', 'GET'])
+@login_required
 def new_auction():
     form = NewAuctionForm()
     if form.validate_on_submit():

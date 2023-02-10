@@ -14,7 +14,7 @@ class User(UserMixin):
 
     def get_id(self):
         """ For login manager"""
-        return self.uid
+        return str(self.uid)
 
     # update user in db
     def update(self):

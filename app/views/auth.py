@@ -29,7 +29,12 @@ def register():
                   'error')
             return redirect(url_for('bp_auth.register'))
 
-        new_user = User(username=email, email=email, password=generate_password_hash(password, method='sha256', salt_length=8))
+        new_user = User(username=form.username.data,
+                        email=email,
+                        password=generate_password_hash(password, method='sha256', salt_length=8),
+                        name=form.name.data,
+                        surname=form.surname.data
+                        )
         new_user.add()
 
         flash('Your account has been created you can now log in')
@@ -65,8 +70,8 @@ def login():
     return render_template('login.html', form=form, user=current_user)
 
 
-@login_required
 @bp.route('/logout')
+@login_required
 def logout_get():
     logout_user()
     flash("You've been successfully logged out.")

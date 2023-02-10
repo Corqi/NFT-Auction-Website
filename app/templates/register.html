@@ -4,7 +4,7 @@ Register
 {%endblock%}
 
 {%block content%}
-    <div id="content" class="d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-center content">
         <div class="card text-center">
             <div class="card-body">
         {% with messages = get_flashed_messages() %}
@@ -32,12 +32,18 @@ Register
     <form class = "forms" method="POST" action="#">
         <dl>
             {{ form.csrf_token }}
+            {{form.username.label}} <br>
+            {{form.username}} <br>
             {{form.email.label}} <br>
             {{form.email}} <br>
             {{form.password.label }} <br>
             {{form.password }} <br>
             {{ form.confirm_password.label}} <br>
             {{ form.confirm_password}} <br>
+            {{form.name.label}} <br>
+            {{form.name}} <br>
+            {{form.surname.label}} <br>
+            {{form.surname}} <br>
         <div class="buttons">
             <button class="btn btn-large btn-login" type="submit">Register</button>
             <p id="linkRegister">You already have an Account? <a class = "login-link" href="{{ url_for('bp_auth.login') }}">Sign in here</a>

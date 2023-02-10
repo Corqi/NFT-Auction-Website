@@ -10,12 +10,16 @@ from wtforms.widgets import TextArea
 
 
 class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(message='E-mail field is required.')],
+                           id='inputUsername')
     email = StringField('E-mail', validators=[InputRequired(message='E-mail field is required.')], id='inputEmail')
     password = PasswordField('Password', validators=[InputRequired(message='Password field is required.')],
                              id='inputPassword')
     confirm_password = PasswordField('Confirm password',
                                      validators=[InputRequired(message='Password field is required.'),
                                                  EqualTo('password')], id='inputPasswordConfirm')
+    name = StringField('Name', id='inputName')
+    surname = StringField('Surname', id='inputSurname')
     submit = SubmitField('Register', id='submitButton')
 
 
