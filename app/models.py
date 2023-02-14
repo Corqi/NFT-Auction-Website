@@ -195,6 +195,7 @@ class History:
     # add user to db
     def add(self):
         # check if history exists
+        cur = db.cursor()
         cur.execute('SELECT * FROM bidding_history WHERE bhid=(%s);', (self.bhid,))
         if len(cur.fetchall()) != 0:
             logging.error('History not found!')

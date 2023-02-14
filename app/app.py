@@ -2,6 +2,8 @@ from flask import Flask, flash, render_template, redirect, url_for, session
 from werkzeug.debug import DebuggedApplication
 from flask_login import LoginManager
 import psycopg2
+from werkzeug.security import generate_password_hash
+
 import app.config
 
 db = psycopg2.connect(
@@ -32,8 +34,24 @@ def create_app():
 
     from .models import User
 
+    users = ['admintest1', 'admintest2', 'admintest3', 'admintest4']
+
+    for user in users:
+        cur = db.cursor()
+        cur.execute('SELECT count(*) FROM users WHERE username=(%s);', (user,))
+        if cur.fetchone()[0] == 0:
+            userdb = User(
+                username=user,
+                password=generate_password_hash(user, method='sha256', salt_length=8),
+                email=user,
+                name=user,
+                surname=user
+            )
+            userdb.add()
+
     @login_manager.user_loader
     def load_user(user_id):
+        cur = db.cursor()
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (user_id,))
         result = cur.fetchone()
         try:

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import current_user, login_required
 
-from app.app import cur
+import app.app
 from app.forms import BiddingForm, NewAuctionForm
 from app.models import Auction, History
 
@@ -13,6 +13,7 @@ bp = Blueprint('bp_auctions', __name__)
 @bp.route('/auctions')
 @login_required
 def user_auctions_get():
+    cur = app.app.db.cursor()
     cur.execute(
         'SELECT ai.*, u.username, COALESCE(MAX(b.price), 0) as max_price '
         'FROM auction_items ai '
@@ -30,6 +31,7 @@ def user_auctions_get():
 @bp.route('/bids')
 @login_required
 def user_bids_get():
+    cur = app.app.db.cursor()
     cur.execute(
         'SELECT bi.*, NULL, ai.name '
         'FROM bidding_history bi '
@@ -45,14 +47,17 @@ def user_bids_get():
 
 @bp.route('/auction/<int:auction_id>', methods=['POST', 'GET'])
 def auction_details(auction_id):
+    cur = app.app.db.cursor()
     cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (auction_id,))
     if not cur.fetchall():
         return render_template('404.html'), 404
     form = BiddingForm()
     if form.validate_on_submit():
+        cur = app.app.db.cursor()
         cur.execute('SELECT price FROM auction_items WHERE aid=(%s);', (auction_id,))
         starting_price = cur.fetchone()[0]
 
+        cur = app.app.db.cursor()
         cur.execute('SELECT MAX(b.price) FROM bidding_history b WHERE b.aid=(%s);', (auction_id,))
         current_price = cur.fetchone()[0]
 
@@ -73,6 +78,7 @@ def auction_details(auction_id):
 
         return redirect(url_for('bp_auctions.auction_details', auction_id=auction_id))
 
+    cur = app.app.db.cursor()
     cur.execute(
         'SELECT ai.*, u.username, COALESCE(MAX(b.price), 0) as max_price '
         'FROM auction_items ai '
@@ -83,6 +89,7 @@ def auction_details(auction_id):
     )
     auction = Auction(*cur.fetchone())
 
+    cur = app.app.db.cursor()
     cur.execute('SELECT b.*, u.username '
                 'FROM bidding_history b, users u '
                 'WHERE b.aid=(%s) AND b.bid=u.uid '

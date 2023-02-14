@@ -53,6 +53,7 @@ def login():
         email = form.email.data
         password = form.password.data
 
+        cur = db.cursor()
         cur.execute('SELECT * FROM users WHERE email=(%s);', (email,))
         result = cur.fetchall()
         try:
