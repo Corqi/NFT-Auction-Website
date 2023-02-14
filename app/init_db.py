@@ -1,7 +1,8 @@
-from app.app import db, cur
+from app.app import db
 
 
 def init_db():
+	cur = db.cursor()
 	# table users
 	cur.execute('DROP TABLE IF EXISTS users CASCADE;')
 	cur.execute('''create table users (
@@ -39,5 +40,26 @@ def init_db():
 				price FLOAT not NULL,
 				FOREIGN KEY(aid) REFERENCES auction_items(aid),
 				FOREIGN KEY(bid) REFERENCES users(uid),
-				CHECK(price >= 0));''')
+				CHECK(price >= 0)
+				);''')
+
+	# create function to check if bid is higher than others
+	cur.execute('''CREATE OR REPLACE FUNCTION isHigher (FLOAT, INTEGER) RETURNS BOOL as '
+					DECLARE 
+						row bidding_history%rowtype;
+					BEGIN
+	    				FOR row in SELECT * FROM bidding_history WHERE bhid=$2 LOOP
+	    					if row.price >= $1 then
+	    						return true;
+	    				END if;
+	    				END LOOP;
+	    				return false;
+	    			end;
+	    			' language 'plpgsql';
+		''')
+
+	# alter bidding_history to use this above function as check
+	cur.execute('''ALTER TABLE bidding_history
+				ADD CONSTRAINT priceCheck
+				CHECK (isHigher(price, bhid) = false);''')
 	db.commit()

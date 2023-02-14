@@ -55,6 +55,7 @@ def auction_details(auction_id):
     form = BiddingForm()
     if form.validate_on_submit():
         cur = app.app.db.cursor()
+        cur.execute('BEGIN;')
         cur.execute('SELECT price, auction_end FROM auction_items WHERE aid=(%s);', (auction_id,))
         result = cur.fetchone()
         starting_price = result[0]
@@ -70,17 +71,24 @@ def auction_details(auction_id):
             if current_price is None:
                 if starting_price < proposed_bid:
                     new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
-                    new_bid.add()
+                    try:
+                        new_bid.add()
+                    except:
+                        pass
                 else:
                     flash('Too small a price')
             else:
                 if current_price < proposed_bid:
                     new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
-                    new_bid.add()
+                    try:
+                        new_bid.add()
+                    except:
+                        pass
                 else:
                     flash('Too small a price')
         else:
             flash('Too late')
+        cur.execute('COMMIT;')
 
         return redirect(url_for('bp_auctions.auction_details', auction_id=auction_id))
 

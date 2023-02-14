@@ -10,7 +10,8 @@ bp = Blueprint('bp_example', __name__)
 
 @bp.route('/example')
 def example_get():
-    # init_db()
+    cur.execute('rollback;')
+    init_db()
     #stri = "' OR '1'='1' /*"
     #cur.execute('SELECT * FROM users WHERE uid=(%s);', stri)
     #print(cur.fetchall())

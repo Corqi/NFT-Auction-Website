@@ -9,8 +9,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 buttons = []
 
 #Enter test data
-price = 100
-auction_id = '17'
+price = 101
+auction_id = '1'
 
 def click_button(button):
     button.click()

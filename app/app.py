@@ -4,11 +4,13 @@ from flask_login import LoginManager
 
 from app.database import db
 from app.test_data import insert_test_data
+from app.init_db import init_db
 
 cur = db.cursor()
 
 
 def create_app():
+    init_db()
     # Create and configure the app
     app = Flask(__name__,
                 instance_relative_config=False
