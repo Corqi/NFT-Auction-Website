@@ -95,6 +95,29 @@ def auction_details(auction_id):
                            is_expired=auction.auction_end < datetime.datetime.now())
 
 
+@bp.route('/won')
+@login_required
+def won_auctions_get():
+    cur.execute(
+        'SELECT ai.*, u.username, bidding_history.price '
+        'FROM bidding_history '
+        'INNER JOIN auction_items ai on ai.aid = bidding_history.aid '
+        'JOIN users u on u.uid = ai.uid '
+        'WHERE bhid '
+        'IN ('
+        'SELECT max(bhid) '
+        'FROM bidding_history bi '
+        'GROUP BY aid'
+        ') '
+        'AND bidding_history.bid = (%s) '
+        'AND ai.auction_end < now();', (current_user.get_id(),)
+    )
+    auctions = []
+    for auction in cur.fetchall():
+        auctions.append(Auction(*auction))
+    return render_template('gallery.html', auctions=auctions, user=current_user)
+
+
 @bp.route('/new', methods=['POST', 'GET'])
 @login_required
 def new_auction():
