@@ -29,7 +29,7 @@ def init_page_get_btn(username, value):
     buttons.append(driver.find_element(By.XPATH, '/html/body/div/div[1]/div/div[2]/div[4]/div[3]/form/dl/div/button'))
 
 
-price = 5000000051
+price = 5000000054
 count = 0
 
 users = ['admintest1', 'admintest2', 'admintest3', 'admintest4']
