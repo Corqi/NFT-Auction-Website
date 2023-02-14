@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 buttons = []
 
 #Enter test data
-price = 101
+price = 105
 auction_id = '1'
 
 def click_button(button):
@@ -48,6 +48,6 @@ for browThread in browThreads:
     browThread.join()
 
 for button in buttons:
-    time.sleep(0.0000000000000000000001)
+    # time.sleep(0.0000000000000000000001)
     threading.Thread(target=click_button, args=(button,)).start()
 

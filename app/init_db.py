@@ -48,7 +48,7 @@ def init_db():
 					DECLARE 
 						row bidding_history%rowtype;
 					BEGIN
-	    				FOR row in SELECT * FROM bidding_history WHERE bhid=$2 LOOP
+	    				FOR row in SELECT * FROM bidding_history WHERE aid=$2 LOOP
 	    					if row.price >= $1 then
 	    						return true;
 	    				END if;
@@ -61,5 +61,5 @@ def init_db():
 	# alter bidding_history to use this above function as check
 	cur.execute('''ALTER TABLE bidding_history
 				ADD CONSTRAINT priceCheck
-				CHECK (isHigher(price, bhid) = false);''')
+				CHECK (isHigher(price, aid) = false);''')
 	db.commit()

@@ -10,7 +10,7 @@ cur = db.cursor()
 
 
 def create_app():
-    init_db()
+    # init_db()
     # Create and configure the app
     app = Flask(__name__,
                 instance_relative_config=False
