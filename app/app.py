@@ -1,17 +1,10 @@
 from flask import Flask, flash, render_template, redirect, url_for, session
 from werkzeug.debug import DebuggedApplication
 from flask_login import LoginManager
-import psycopg2
-from werkzeug.security import generate_password_hash
 
-import app.config
+from app.database import db
+from app.test_data import insert_test_data
 
-db = psycopg2.connect(
-    host=app.config.DB_HOST,
-    database=app.config.DB_NAME,
-    user=app.config.DB_USER,
-    password=app.config.DB_PASSWORD
-)
 cur = db.cursor()
 
 
@@ -24,6 +17,8 @@ def create_app():
     # Load config from file config.py
     app.config.from_pyfile('config.py')
 
+    insert_test_data()
+
     # Turn on debug mode
     app.debug = True
     app.wsgi_app = DebuggedApplication(app.wsgi_app)
@@ -33,21 +28,6 @@ def create_app():
     login_manager.init_app(app)
 
     from .models import User
-
-    users = ['admintest1', 'admintest2', 'admintest3', 'admintest4']
-
-    for user in users:
-        cur = db.cursor()
-        cur.execute('SELECT count(*) FROM users WHERE username=(%s);', (user,))
-        if cur.fetchone()[0] == 0:
-            userdb = User(
-                username=user,
-                password=generate_password_hash(user, method='sha256', salt_length=8),
-                email=user,
-                name=user,
-                surname=user
-            )
-            userdb.add()
 
     @login_manager.user_loader
     def load_user(user_id):

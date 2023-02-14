@@ -1,6 +1,6 @@
 import logging
 from flask_login import UserMixin
-from app.app import db, cur
+from app.database import db
 
 
 class User(UserMixin):
@@ -19,6 +19,7 @@ class User(UserMixin):
     # update user in db
     def update(self):
         # check if user exists
+        cur = db.cursor()
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (self.uid,))
         if len(cur.fetchall()) == 0:
             logging.error('User not found!')
@@ -38,6 +39,7 @@ class User(UserMixin):
     # add user to db
     def add(self):
         # check if username already exists
+        cur = db.cursor()
         cur.execute('SELECT * FROM users WHERE username=(%s);', (self.username,))
         if len(cur.fetchall()) != 0:
             logging.error('Username already taken!')
@@ -78,6 +80,7 @@ class Auction:
     # update auction in db
     def update(self):
         # check if auction exists
+        cur = db.cursor()
         cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (self.aid,))
         if len(cur.fetchall()) == 0:
             logging.error('Auction not found!')
@@ -116,6 +119,7 @@ class Auction:
 
     # add auction to db
     def add(self):
+        cur = db.cursor()
         cur.execute('BEGIN TRANSACTION;')
         # check if seller and bidder exists
         cur.execute('SELECT * FROM users WHERE uid=(%s);', (self.uid,))
@@ -163,6 +167,7 @@ class History:
     # update history in db
     def update(self):
         # check if history exists
+        cur = db.cursor()
         cur.execute('SELECT * FROM bidding_history WHERE bhid=(%s);', (self.bhid,))
         if len(cur.fetchall()) == 0:
             logging.error('History not found!')
