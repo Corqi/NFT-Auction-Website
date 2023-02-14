@@ -48,28 +48,34 @@ def auction_details(auction_id):
     cur.execute('SELECT * FROM auction_items WHERE aid=(%s);', (auction_id,))
     if not cur.fetchall():
         return render_template('404.html'), 404
+
     form = BiddingForm()
     if form.validate_on_submit():
-        cur.execute('SELECT price FROM auction_items WHERE aid=(%s);', (auction_id,))
-        starting_price = cur.fetchone()[0]
+        cur.execute('SELECT price, auction_end FROM auction_items WHERE aid=(%s);', (auction_id,))
+        result = cur.fetchone()
+        starting_price = result[0]
+        auction_end = result[1]
 
         cur.execute('SELECT MAX(b.price) FROM bidding_history b WHERE b.aid=(%s);', (auction_id,))
         current_price = cur.fetchone()[0]
 
         proposed_bid = form.price.data
 
-        if current_price is None:
-            if starting_price < proposed_bid:
-                new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
-                new_bid.add()
+        if auction_end > datetime.datetime.now():
+            if current_price is None:
+                if starting_price < proposed_bid:
+                    new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
+                    new_bid.add()
+                else:
+                    flash('Too small a price')
             else:
-                flash('eee co tak mało?')
+                if current_price < proposed_bid:
+                    new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
+                    new_bid.add()
+                else:
+                    flash('Too small a price')
         else:
-            if current_price < proposed_bid:
-                new_bid = History(aid=auction_id, bid=current_user.uid, price=proposed_bid)
-                new_bid.add()
-            else:
-                flash('eee co tak mało?')
+            flash('Too late')
 
         return redirect(url_for('bp_auctions.auction_details', auction_id=auction_id))
 
